@@ -1,0 +1,17 @@
+*.lo
+*.o
+*.a
+*.spec
+*.d
+*.mo
+wxHexEditor
+.libs/
+.deps/
+*.la
+*.log
+*.status
+
+
+
+
+

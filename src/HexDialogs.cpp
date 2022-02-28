@@ -336,7 +336,7 @@ bool FindDialog::SearchAtBufferUnitTest(void){
 	enum { STEP = 100000 };
 	char buff[STEP];
 	for(unsigned i=0;i<STEP;i++) buff[i]=0;
-	wxString src = "keYWord";
+	wxString src = wxString::FromAscii("keYWord");
 
 	wxMemoryBuffer target;
 	target.AppendData( src.Lower().ToAscii(), src.Len() );
@@ -983,8 +983,10 @@ uint64_t FindDialog::FindBinaryBackward(wxMemoryBuffer target, uint64_t from , u
 	wxString emsg = gauge_msg + wxT("\n") ;
 	uint64_t current_offset = from ; //higher offset
 	uint64_t end_offset = to_offset; //lower offset due backward search
-	if( current_offset < end_offset )
-		wxSwap( current_offset, end_offset);
+	if( current_offset < end_offset ) {
+        std::swap(current_offset, end_offset);
+		// wxSwap( current_offset, end_offset);
+    }
 	uint64_t backward_offset = current_offset;
 
 	bool first_search=true;
@@ -2040,7 +2042,7 @@ void CopyAsDialog::Copy( void ){
 			for(unsigned current_offset = 0; current_offset < select->GetSize() ; current_offset ++){
 				cb+= wxString::Format( HexFormat, (unsigned char)buff[ current_offset ] );
 				if(current_offset+1==select->GetSize())
-					if (HexFormat.EndsWith(", ")) //Ox with period
+					if (HexFormat.EndsWith(wxString::FromAscii(", "))) //Ox with period
 						cb=cb.RemoveLast(2);
 				if( quad && ((current_offset+1)%2)==0)
 					cb += wxT(" ");

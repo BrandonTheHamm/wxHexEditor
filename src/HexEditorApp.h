@@ -53,6 +53,8 @@
 #include <wx/app.h>
 #include "HexEditorFrame.h"
 
+class wxEventLoopBase;
+
 class wxHexEditorApp : public wxApp {
 	public:
 		virtual bool OnInit();

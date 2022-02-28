@@ -429,7 +429,7 @@ inline wxMemoryDC* wxHexCtrl::CreateDC(){
 	// at least 1*1 one.
 	wxSize sizeBmp = GetSize();
 	sizeBmp.IncTo(wxSize(1, 1));
-	internalBufferBMP= new wxBitmap(sizeBmp);
+	internalBufferBMP= new wxBitmap(sizeBmp.GetWidth(), sizeBmp.GetHeight());
 	internalBufferDC = new wxMemoryDC();
 	internalBufferDC->SelectObject(*internalBufferBMP);
 	return internalBufferDC;
@@ -763,8 +763,10 @@ void wxHexCtrl::TagPainter( wxDC* DC, TagElement& TG ){
 	int start = TG.start;
 	int end = TG.end;
 
-	if( start > end )
-		wxSwap( start, end );
+	if( start > end ) {
+        std::swap(start, end);
+		// wxSwap( start, end );
+    }
 
 	if( start < 0 )
 		start = 0;
@@ -847,8 +849,10 @@ void wxHexCtrl::TagPainterGC( wxGraphicsContext* gc, TagElement& TG ){
 	int start = TG.start;
 	int end = TG.end;
 
-	if( start > end )
-		wxSwap( start, end );
+	if( start > end ) {
+        std::swap( start, end );
+		// wxSwap( start, end );
+    }
 
 	if( start < 0 )
 		start = 0;
@@ -865,8 +869,21 @@ void wxHexCtrl::TagPainterGC( wxGraphicsContext* gc, TagElement& TG ){
    std::cout << "Tag paint from : " << start << " to " << end << std::endl;
 #endif
 	wxColor a;
-	a.SetRGBA( TG.NoteClrData.GetColour().GetRGB() | 80 << 24 );
-	wxBrush sbrush(wxBrush(a, wxBRUSHSTYLE_SOLID ));
+	// a.SetRGBA( TG.NoteClrData.GetColour().GetRGB() | 80 << 24 );
+	// a.Set( TG.NoteClrData.GetColour().GetRGB() | 80 << 24 );
+    wxColor tmp = TG.NoteClrData.GetColour();
+    unsigned char r = tmp.Red();
+    unsigned char g = tmp.Green();
+    unsigned char b = tmp.Blue();
+
+    long rgb = r << 24 |
+        g << 16 | 
+        b << 8 | 
+        80;
+    a.Set(rgb);
+
+
+	wxBrush sbrush(wxBrush(a, wxSOLID ));
 	gc->SetBrush( sbrush );
 	wxGraphicsBrush gcbrush = gc->CreateBrush( sbrush );
 	//gc->SetPen( *wxRED_PEN );

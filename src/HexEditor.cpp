@@ -391,8 +391,10 @@ bool HexEditor::FileSave( wxString savefilename ) {
 		wxGetDiskSpace( savefilename, &total, &available );
 		if( FileLength() > available ){
 			int state = wxMessageBox( wxString::Format( _( "There are not enough free disk space.\nRequired: %s\nAvailable: %s"),
-															wxFileName::GetHumanReadableSize( wxULongLong(FileLength()) ),
-															wxFileName::GetHumanReadableSize( wxULongLong(available.GetValue()) ) ), _("Not Enought Space"), wxCANCEL|wxOK|wxICON_QUESTION, this );
+															wxFileName::GetHumanReadableSize( wxULongLong(FileLength()) ).ToAscii().data(),
+															wxFileName::GetHumanReadableSize( wxULongLong(available.GetValue()) ).ToAscii().data() ), 
+                                                             _("Not Enought Space"), 
+                                                             wxCANCEL|wxOK|wxICON_QUESTION, this );
 			if(state==wxCANCEL)
 				return false;
 			}

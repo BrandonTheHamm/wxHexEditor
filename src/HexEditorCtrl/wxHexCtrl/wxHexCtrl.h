@@ -193,8 +193,8 @@ virtual void ChangeSize();	// update the geometry
 class myConfigBase{
 	public:
 	static wxConfigBase* Get(){
-		static wxFileConfig* AppConfigFile=new wxFileConfig("", "","wxHexEditor.cfg", "",  wxCONFIG_USE_RELATIVE_PATH);
-		if( wxFileExists ("wxHexEditor.cfg") )
+		static wxFileConfig* AppConfigFile=new wxFileConfig(wxEmptyString, wxEmptyString, wxString::FromAscii("wxHexEditor.cfg"), wxEmptyString, wxCONFIG_USE_RELATIVE_PATH);
+		if( wxFileExists (wxString::FromAscii("wxHexEditor.cfg")) )
 			return AppConfigFile;
 		else
 			return wxConfigBase::Get();
